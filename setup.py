@@ -24,7 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'talker = my_useful_pkg.talker:main',
+            'task1 = workpkg.task1:main',
+            'task2 = workpkg.task2:main',
         ],
     },
 )
