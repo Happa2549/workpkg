@@ -7,10 +7,14 @@ jobs:
     container: ryuichiueda/ubuntu22.04-ros2:latest
     steps:
       - uses: actions/checkout@v2
-      - name: build and test
+
+      - name: Build and test
         run: |
-          rsync -av ./ /root/ros2_ws/src/workpkg/
-          cd /root/ros2_ws
-          source /root/ros2_ws/install/setup.bash || true
-          bash -xv ./src/workpkg/test/test.bash /root
+          WORKSPACE=/github/workspace/ros2_ws
+          mkdir -p $WORKSPACE/src
+          rsync -av ./ $WORKSPACE/src/workpkg/
+          cd $WORKSPACE
+          colcon build --symlink-install
+          ./src/workpkg/test/test.bash
+
 
