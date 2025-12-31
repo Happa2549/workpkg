@@ -8,6 +8,8 @@ cd $WORKSPACE
 mkdir -p $WORKSPACE/src
 cd $WORKSPACE
 
+source /opt/ros/humble/setup.bash
+
 colcon build
 source install/setup.bash
 
