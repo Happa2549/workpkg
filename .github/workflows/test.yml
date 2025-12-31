@@ -14,7 +14,12 @@ jobs:
           mkdir -p $WORKSPACE/src
           rsync -av ./ $WORKSPACE/src/workpkg/
           cd $WORKSPACE
+          source /opt/ros/humble/setup.bash
+          export ROS_LOG_DIR=$WORKSPACE/log
+          mkdir -p $ROS_LOG_DIR
           colcon build --symlink-install
+          source install/setup.bash
+          chmod +x ./src/workpkg/test/test.bash
           ./src/workpkg/test/test.bash
 
 
