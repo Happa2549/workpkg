@@ -26,6 +26,8 @@ setup(
         'console_scripts': [
             'task1 = workpkg.task1:main',
             'task2 = workpkg.task2:main',
+            'task1_test = workpkg.task1_test:main',
+            'task2_test = workpkg.task2_test:main',
         ],
     },
 )
