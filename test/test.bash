@@ -4,17 +4,17 @@ set -e
 WORKSPACE=/github/workspace/ros2_ws
 
 cd $WORKSPACE
-
-mkdir -p $WORKSPACE/src
+mkdir -p src
+cd src
 cd $WORKSPACE
 
 source /opt/ros/humble/setup.bash
-
 colcon build
 source install/setup.bash
 
-timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 &
-ros2 run workpkg task1_test
+bash -c "timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 || true" &
+
+echo "test task" | ros2 run workpkg task1_test
 
 sleep 1
 
