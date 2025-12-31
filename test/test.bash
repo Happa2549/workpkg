@@ -2,16 +2,17 @@
 set -e
 
 WORKSPACE=/github/workspace/ros2_ws
-
 mkdir -p $WORKSPACE/src
+rsync -av ./ $WORKSPACE/src/workpkg/
+
 cd $WORKSPACE
 
-source /opt/ros/humble/setup.bash
+. /opt/ros/humble/setup.bash
 
 colcon build --symlink-install
-source install/setup.bash
+. install/setup.bash
 
-timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 &
+bash -c "timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 || true" &
 
 echo "test task" | ros2 run workpkg task1_test
 
@@ -25,5 +26,4 @@ else
     cat /tmp/task2.log
     exit 1
 fi
-
 

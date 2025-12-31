@@ -9,17 +9,19 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build and test
+        shell: bash
         run: |
           WORKSPACE=/github/workspace/ros2_ws
           mkdir -p $WORKSPACE/src
           rsync -av ./ $WORKSPACE/src/workpkg/
           cd $WORKSPACE
-          source /opt/ros/humble/setup.bash
-          export ROS_LOG_DIR=$WORKSPACE/log
-          mkdir -p $ROS_LOG_DIR
+
+          . /opt/ros/humble/setup.bash
+
           colcon build --symlink-install
-          source install/setup.bash
-          chmod +x ./src/workpkg/test/test.bash
+          . install/setup.bash
+
           ./src/workpkg/test/test.bash
+
 
 
