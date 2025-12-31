@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2025 Morito Shunsuke
+# SPDX-License-Identifier: GPL-3.0-only
+
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String

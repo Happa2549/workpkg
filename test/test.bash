@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-FileCopyrightText: 2025 Morito Shunsuke
+# SPDX-License-Identifier: GPL-3.0-only
 set -e
 
 WORKSPACE=/github/workspace/ros2_ws
