@@ -2,18 +2,19 @@
 set -e
 
 WORKSPACE=/github/workspace/ros2_ws
+LOG_DIR=$WORKSPACE/.ros_log
+
 mkdir -p $WORKSPACE/src
-rsync -av ./ $WORKSPACE/src/workpkg/
+mkdir -p $LOG_DIR
+export ROS_LOG_DIR=$LOG_DIR
 
 cd $WORKSPACE
 
-. /opt/ros/humble/setup.bash
-
+source /opt/ros/humble/setup.bash
 colcon build --symlink-install
-. install/setup.bash
+source install/setup.bash
 
-bash -c "timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 || true" &
-
+timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 &
 echo "test task" | ros2 run workpkg task1_test
 
 sleep 1
