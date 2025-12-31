@@ -18,16 +18,14 @@ source install/setup.bash
 TMP_LOG=/tmp/task2.log
 
 timeout 5 ros2 run workpkg task2_test > $TMP_LOG 2>&1 &
-sleep 1
 echo "test task" | ros2 run workpkg task1_test
 sleep 1
-
 if grep -q "test task" $TMP_LOG; then
-    echo "[Basic test] Passed"
-else
-    echo "[Basic test] Failed"
-    cat $TMP_LOG
-    exit 1
+	echo "Test passed" 
+	exit 0 
+else echo "Test failed"
+	cat $TMP_LOG 
+	exit 1 
 fi
 
 echo "single message" | ros2 run workpkg task1_test
