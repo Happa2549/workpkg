@@ -1,6 +1,6 @@
 # workpkg
 
- ノードの説明（未定）
+ このros２のパッケージは端末１からタスクを送信し、端末２でタスクリストとして保持、管理するサンプルです。
 
  **Repository:**
 https://github.com/Happa2549/workpkg
@@ -13,76 +13,53 @@ https://github.com/Happa2549/workpkg
 - [既知の制限](#既知の制限)
 - [ライセンス](#ライセンス)
 
-## 準備
 
-### 1. Python環境のインストール
+## ディレクトリ構成
+workpkg/
+├── package.xml
+├── setup.py
+├── workpkg/
+│   ├── task1.py
+│   ├── task2.py
+│   ├── task1_test.py
+│   └── task2_test.py
+└── test/
+    └── test.bash
 
-Ubuntu 系の場合、以下を実行してください：
+## ノード一覧
+- `task1`: ユーザ入力からタスクを送信するパブリッシャノード
+- `task2`: 受信したタスクをリストに保持するサブスクライバノード
+- `task1_test`: 自動テスト用の `task1` ノード（非対話型）
+- `task2_test`: 自動テスト用の `task2` ノード
 
-```bash
-sudo apt update
-sudo apt install -y python3 python3-pip
 
-pip install --upgrade pip
-pip install PyPDF2 pdfplumber
 
-chmod +x cvt_pdf
-chmod +x test.bash
+## ノードの起動
+ ```
+  #端末1: 送信側
+  $ros2 run workpkg task1
 
+  #端末2: 受信側
+  $ros2 run workpkg task2
 ```
 
 
- ### 2. 対応環境
- - Ubuntu 22.04 / 20.04
- - Python 3.10, 3.11　(動作確認済み)
+## 使用例
+```
+# ターミナル1: タスク送信
+$ros2 run workpkg task1
+# Add task: と表示されたらタスク名を入力
+# 例:
+# Add task: 買い物
+# Add task: 洗濯
 
- ※ 本環境では release-upgrades が無効化されており、
-      Ubuntu のメジャーバージョンアップは実施できなかったため
-      本バージョン以降の動作は保証していません｡
-
-
-## ファイルの実行
-- 本プログラムはPDFを標準入力から受け取ります。
-- ファイル名を引数として直接指定することはできません。
-
-- まず中身をテキストに起こしたいPDFファイルを用意する。
-
-- そのファイルをcvt_pdfと同じディレクトリに置く。
-
-- 次に以下を入力する。
-
-## 使用例＋出力例
-### 1. 全文表示(PDF全ページを出力)
- ```
-　$ cat sample.pdf | ./cvt_pdf
-  [Page 1]
-　これはPDFのテキストです。
- ```
-- PDF 内のテキストが標準出力に表示されます。
-
-### 2. ページ指定(例：1ページ目のみ出力)
- ```
-　$ (echo 1; echo "-"; cat sample.pdf) | ./cvt_pdf
-　＊ここに1ページの内容が表示される。
- ```
-- 指定したページのテキストのみを出力します。
-
-### 3. PDF内検索(例："test"を含むすべてのページ番号を出力)
- ```
-　$ (echo test; echo "-"; cat sample.pdf) | ./cvt_pdf
-　1
-　2
-　5
- ```
-- 検索したワードを含むページ番号のみを出力します。
-- 改行を挟む単語を検索する場合にうまく検出されない場合があります。
-
-## 既知の制限
-   - 画像だけのPDFはテキストが抽出できません（別途OCRが必要）。
-   - 日本語の特殊フォントは正しく出力されない場合があります。
-   - 検索機能において、数字を検索する場合、指定のページを出力する機能のほうが優先されるため、数字の検索はできません。
-   - PDF以外の入力や壊れたPDFを入力した場合、終了ステータス1で終了します。
-   - 標準入力がからの場合も修力ステータス1で終了します。
+# ターミナル2: タスク受信
+$ros2 run workpkg task2
+# 受信したタスクがリスト表示されます
+# Current tasks:
+# 1. 買い物
+# 2. 洗濯
+```
 
 
 # ライセンス
