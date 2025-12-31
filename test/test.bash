@@ -45,7 +45,18 @@ FAIL=0
 for i in {1..5}; do
     if ! grep -q "msg $i" /tmp/task2.log; then
         ech
+echo "" | ros2 run workpkg task1_test
+LONG_MSG=$(head -c 5000 </dev/zero | tr '\0' 'a')
+echo "$LONG_MSG" | ros2 run workpkg task1_test
+sleep 1
 
+if grep -q "$LONG_MSG" $TMP_LOG; then
+    echo "[Abnormal input] Passed"
+else
+    echo "[Abnormal input] Failed"
+    cat $TMP_LOG
+    exit 1
+fi
 
 echo "All tests passed"
 exit 0
