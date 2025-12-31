@@ -28,4 +28,14 @@ else echo "Test failed"
 fi
 
 
+echo "single message" | ros2 run workpkg task1_test
+if [ $? -eq 0 ]; then
+    echo "[task1_test single message] Passed"
+else
+    echo "[task1_test single message] Failed"
+    exit 1
+fi
 
+
+echo "All tests passed"
+exit 0
