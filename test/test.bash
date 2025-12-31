@@ -36,6 +36,16 @@ else
     exit 1
 fi
 
+for i in {1..5}; do
+    echo "msg $i" | ros2 run workpkg task1_test
+done
+sleep 1
+
+FAIL=0
+for i in {1..5}; do
+    if ! grep -q "msg $i" /tmp/task2.log; then
+        ech
+
 
 echo "All tests passed"
 exit 0
