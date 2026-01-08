@@ -17,18 +17,15 @@ source /opt/ros/humble/setup.bash
 colcon build --symlink-install
 source install/setup.bash
 
-TMP_LOG=/tmp/task2.log
-
-timeout 5 ros2 run workpkg task2_test > $TMP_LOG 2>&1 &
-sleep 1
+timeout 5 ros2 run workpkg task2_test > /tmp/task2.log 2>&1 &
 echo "test task" | ros2 run workpkg task1_test
 sleep 1
 
-if grep -q "test task" $TMP_LOG; then
-    echo "[Basic test] Passed"
+if grep -q "test task" /tmp/task2.log; then
+    echo "Test passed"
 else
-    echo "[Basic test] Failed"
-    cat $TMP_LOG
+    echo "Test failed"
+    cat /tmp/task2.log
     exit 1
 fi
 
@@ -40,8 +37,6 @@ else
     exit 1
 fi
 
-timeout 5 ros2 run workpkg task2_test > $TMP_LOG 2>&1 &
-sleep 1
 for i in {1..5}; do
     echo "msg $i" | ros2 run workpkg task1_test
 done
@@ -49,33 +44,33 @@ sleep 1
 
 FAIL=0
 for i in {1..5}; do
-    if ! grep -q "msg $i" $TMP_LOG; then
+    if ! grep -q "msg $i" /tmp/task2.log; then
         echo "[Multiple messages] msg $i missing"
         FAIL=1
     fi
 done
+
 if [ $FAIL -eq 0 ]; then
     echo "[Multiple messages] Passed"
 else
     echo "[Multiple messages] Failed"
-    cat $TMP_LOG
+    cat /tmp/task2.log
     exit 1
 fi
 
-timeout 5 ros2 run workpkg task2_test > $TMP_LOG 2>&1 &
-sleep 1
 echo "" | ros2 run workpkg task1_test
 LONG_MSG=$(head -c 5000 </dev/zero | tr '\0' 'a')
 echo "$LONG_MSG" | ros2 run workpkg task1_test
 sleep 1
 
-if grep -q "$LONG_MSG" $TMP_LOG; then
+if grep -q "$LONG_MSG" /tmp/task2.log; then
     echo "[Abnormal input] Passed"
 else
     echo "[Abnormal input] Failed"
-    cat $TMP_LOG
+    cat /tmp/task2.log
     exit 1
 fi
+
 
 echo "All tests passed"
 exit 0
