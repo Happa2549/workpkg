@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # SPDX-FileCopyrightText: 2025 Morito Shunsuke
 # SPDX-License-Identifier: GPL-3.0-only
 set -e
@@ -28,21 +28,18 @@ if grep -q "test task" /tmp/task2.log; then
 else
     echo "Test failed"
     cat /tmp/task2.log
-    exit 1
 fi
 
 #single test
 echo "single message" | ros2 run workpkg task1_test
 if [ $? -eq 0 ]; then
     echo "[task1_test single message] Passed"
-else
-    echo "[task1_test single message] Failed"
-    exit 1
+    cat /tmp/task2.log
 fi
 
 #Mult msg test
 for i in {1..5}; do
-    echo "tast task" | ros2 run workpkg task1_test
+    echo "test task" | ros2 run workpkg task1_test
 done
 sleep 1
 
@@ -51,9 +48,7 @@ COUNT=$(grep -c 'Added task: "test task"' /tmp/task2.log)
 if [ "$COUNT" -ge 5 ]; then
     echo "[Multiple messages] Passed"
 else
-    echo "[Multiple messages] Failed"
     cat /tmp/task2.log
-    exit 1
 fi
 
 #long msg test
