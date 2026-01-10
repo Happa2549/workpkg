@@ -24,13 +24,13 @@ https://github.com/Happa2549/workpkg
 
 
 ## ノード・トピック一覧
-###ノード一覧
+### ノード一覧
 - `task1.py`：ユーザ入力からタスクを送信するパブリッシャノード
 - `task2.py`：受信したタスクをリストに保持するサブスクライバノード
 - `task1_test.py`：自動テスト用の送信ノード
 - `task2_test.py`：自動テスト用の受信ノード
 
-###トピック一覧
+### トピック一覧
 - トピック名：/task_list 
 - 型：std_msgs/msg/String
 - Publisher：task1.py
