@@ -21,7 +21,7 @@ task2は、/task_listトピックを購読し、任意のROS2ノード(このサ
 ### トピック一覧
 - トピック名：/task_list 
 - 型：std_msgs/msg/String
-- Publisher：task1
+- Publisher：本パッケージではtask1がパブリッシュノードであるが、タスク情報を文字列として送信する任意のノードが publish 可能である。
 - Subscriber：本パッケージではtask2が購読しているが同じ型を使用するノードが購読可能である。 
  
 
